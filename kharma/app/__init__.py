@@ -16,9 +16,9 @@ class Kharma:
     """
     Copyright (c) 2022 Rog3rSm1th
 
-    Kharma is a state-of-the-art grammar fuzzer. It can generate many random documents 
-    based on a grammar which can be used to improve your testing corpus by increasing 
-    code coverage and to find bugs/vulnerabilities in many kinds of applications 
+    Kharma is a state-of-the-art grammar fuzzer. It can generate many random documents
+    based on a grammar which can be used to improve your testing corpus by increasing
+    code coverage and to find bugs/vulnerabilities in many kinds of applications
     (interpreters, files parsers, etc...).
     """
 

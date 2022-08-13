@@ -1,0 +1,13 @@
+functions:
+    sum: |
+                <%python (term_1, term_2)
+                    term_1_int = int(term_1)
+                    term_2_int = int(term_2)
+                    sum = term_1_int + term_2_int
+                    return sum
+                %>
+consts:
+    imported_constant: "imported constant"
+variables:
+    imported_variable:  
+        - "imported variable"

@@ -1,0 +1,40 @@
+imports:
+    import: "test_import.kg"
+functions:
+    multiply: |
+                <%python (factor_1, factor_2)
+                    factor_1_int = int(factor_1)
+                    factor_2_int = int(factor_2)
+                    product = factor_1_int*factor_2_int
+                    return product
+                %>
+consts:
+    const_vanilla: "const vanilla"
+variables:
+    variable_vanilla:
+        - "variable vanilla"
+    variable_anchor_variable:
+        - "++variable_vanilla++"
+    variable_element:
+        - "@@element_@@ @@element_@@"
+    variable_anchor_import_constant:
+        - "++import:imported_constant++"
+    variable_anchor_import_variable:
+        - "++import:imported_variable++"
+    variable_anchor_import_function:
+        - "[%%call~import:sum%%](3,4)"
+    variable_function:
+        - "[%%call~multiply%%](3,4)"
+    variable_regexp:
+        - "[%%regexp:[A-Za-z0-9]+%%]"
+    variable_range:
+        - "[%%range%%](42, 1337)"
+    variable_repeat:
+        - "[##repeat:1:5:dup:##]{%looped string%}"
+    variable_repeat_no_dup:
+        - "[##repeat:1:5:nodup:##]{%looped string%}"
+    variable_repeat_separator:
+        - "[##repeat:1:5:nodup:##]{%looped string%}"
+variance:
+    main: 
+        - "++variable_vanilla++"
