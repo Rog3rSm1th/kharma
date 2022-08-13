@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "kharma"
+version = "0.0.1"
+description = "Kharma is a state-of-the-art grammar fuzzer"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/Rog3rSm1th/Kharma"
+repository = "https://github.com/Rog3rSm1th/Kharma"
+keywords = ["kharma", "grammar", "fuzzer"]
+authors = ["Rog3rSm1th <r0g3r5@protonmail.com>"]
+include = [
+    "LICENSE"
+]
+classifiers = [
+    "Environment :: Console"
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+PyYAML = "^6.0"
+"ruamel.yaml" = "^0.17.21"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.poetry.scripts]
+kharma = "kharma.main:main"

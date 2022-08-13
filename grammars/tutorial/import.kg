@@ -1,0 +1,17 @@
+functions:
+    # Here we define the "sum" function.
+    sum: |
+                <%python (term_1, term_2)
+                    term_1_int = int(term_1)
+                    term_2_int = int(term_2)
+                    sum = term_1_int + term_2_int
+                    return sum
+                %>
+
+consts:
+    int8:    "[%%range%%](-128, 127)"
+    uint8:   "[%%range%%](0, 255)"
+    int16:   "[%%range%%](-32768, 32767)"
+    uint16:  "[%%range%%](0, 65535)"
+    int32:   "[%%range%%](-2147483648, 2147483647)"
+    uint32:  "[%%range%%](0, 4294967295)"
