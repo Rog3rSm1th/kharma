@@ -30,9 +30,10 @@ def parse_arguments() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         description="""
-        Kharma is a state-of-the-art grammar fuzzer. It can be used to improve
-        your testing corpus by increasing code coverage and find bugs/vulnerabilities in
-        a lot of different applications (interpreters, files parsers, etc...)
+        Kharma is a state-of-the-art grammar fuzzer. It can generate many random documents 
+        based on a grammar, which can be used to improve your testing corpus by increasing 
+        code coverage and to find bugs/vulnerabilities in many kinds of applications 
+        (interpreters, files parsers, etc...).
         """
     )
     # Version

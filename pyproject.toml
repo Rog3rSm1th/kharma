@@ -16,7 +16,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 PyYAML = "^6.0"
 "ruamel.yaml" = "^0.17.21"
 
