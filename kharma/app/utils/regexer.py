@@ -1,8 +1,12 @@
+from ast import Import
 import itertools
 import string
 import sys
 from random import choice
-from re import _parser  # type: ignore
+try:
+    from re import _parser  # type: ignore
+except ImportError:
+    import sre_parse as _parser # type: ignore
 from typing import Any, Pattern, Tuple
 from kharma.app.utils.numeric import random_int
 

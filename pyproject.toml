@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kharma"
-version = "0.0.1"
+version = "0.0.2"
 description = "Kharma is a state-of-the-art grammar fuzzer"
 license = "MIT"
 readme = "README.md"
@@ -16,7 +16,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.6"
 PyYAML = "^6.0"
 "ruamel.yaml" = "^0.17.21"
 
