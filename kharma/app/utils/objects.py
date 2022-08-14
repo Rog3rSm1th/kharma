@@ -17,9 +17,12 @@ class KharmaConst(KharmaObject):
     Can be called with ++<const_name>++
     """
 
-    def __init__(self, name: str, value: str) -> None:
+    def __init__(self, name: str, value: str, static: bool = False) -> None:
         self.name = name
         self.value = value
+        # Static consts
+        self.static = static
+        self.static_value = None
 
 
 class KharmaVar(KharmaObject):
@@ -28,9 +31,12 @@ class KharmaVar(KharmaObject):
     Can be called with ++<variable_name>++
     """
 
-    def __init__(self, name: str, values: List[str]) -> None:
+    def __init__(self, name: str, values: List[str], static: bool = False) -> None:
         self.name = name
         self.values = [value for value in values]
+        # Static variables
+        self.static = static
+        self.static_value = None
 
     @property
     def value(self) -> str:

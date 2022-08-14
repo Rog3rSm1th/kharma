@@ -34,10 +34,14 @@ def handle_anchor(self, string) -> str:
         if is_import:
             import_reference = anchor_statement.group(1)[:-1]
             import_anchors = self.__class__.imports[import_reference].anchors
-            anchor_value = [anchor.value for anchor in import_anchors if anchor.name == anchor_reference][0]
+            anchor = [anchor for anchor in import_anchors if anchor.name == anchor_reference][0]
+            # Handle static variables
+            anchor_value = anchor.static_value if anchor.static else anchor.value
         # ++reference++
         else:
-            anchor_value = [anchor.value for anchor in self.anchors if anchor.name == anchor_reference][0]
+            anchor = [anchor for anchor in self.anchors if anchor.name == anchor_reference][0]
+            # Handle static variables
+            anchor_value = anchor.static_value if anchor.static else anchor.value
     # If reference isn't defined
     except KeyError as e:
         raise ReferenceError("%s is not imported" % import_reference)
