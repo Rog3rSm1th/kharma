@@ -140,7 +140,7 @@ class Kharma:
                 if not isinstance(raw_template["functions"][name], str):
                     raise BadTemplateError("function %s needs to be a string in %s" % (name, relative_path))
                 if not re.match(self.python_regexp, raw_template["functions"][name]):
-                    raise BadTemplateError("function %s is invalid %s" % (name, relative_path))
+                    raise BadTemplateError("function %s is invalid in %s" % (name, relative_path))
 
         # Check if all imports are strings
         if "imports" in raw_template.keys():

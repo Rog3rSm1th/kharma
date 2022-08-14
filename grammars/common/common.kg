@@ -1,0 +1,42 @@
+functions:
+    base85: |
+            <%python (input)
+            return __import__("base64").b85encode(input.encode()).decode()
+            %>
+    base64: |
+            <%python (input)
+            return __import__("base64").b64encode(input.encode()).decode()
+            %>
+    base32: |
+            <%python (input)
+            return __import__("base64").b32encode(input.encode()).decode()
+            %>
+    hex: |
+            <%python (input)
+            return __import__("base64").b16encode(input.encode()).decode().lower()
+            %>
+consts:
+    # Numeric values
+    integer: "[%%range%%](-infinity, infinity)"
+    float: '[%%regexp:(-?([1-9][0-9]*))?\.[0-9]+%%]'
+    int8: "[%%range%%](-128, 127)"
+    uint8: "[%%range%%](0, 255)"
+    int16: "[%%range%%](-32768, 32767)"
+    uint16: "[%%range%%](0, 65535)"
+    int32: "[%%range%%](-2147483648, 2147483647)"
+    uint32: "[%%range%%](0, 4294967295)"
+    int64: "[%%range%%](-9223372036854775808, 9223372036854775807)"
+    uint64: "[%%range%%](0, 18446744073709551615)"
+
+    # Colors
+    hex_color: '[%%regexp:^#([a-f0-9]{6}|[a-f0-9]{3})$%%]'
+    rgb_color: '[%%regexp:^rgb\([%%range%%](0, 255), [%%range%%](0, 255), [%%range%%](0, 255)\)$%%]'
+    rgba_color: '[%%regexp:^rgba\([%%range%%](0, 255), [%%range%%](0, 255), [%%range%%](0, 255), (0|1|(0\.[1-9]))\)$%%]'
+    hsl_color: '[%%regexp:^hsl\([%%range%%](0, 360), [%%range%%](0, 100)%, [%%range%%](0, 100)%\)$%%]'
+    hsla_color: '[%%regexp:^hsla\([%%range%%](0, 360), [%%range%%](0, 100)%, [%%range%%](0, 100)%, (0|1|(0\.[1-9]))\)$%%]'
+    
+    # Hashes
+    md5: '[%%regexp:^[0-9a-f]{32}$%%]'
+    sha1: '[%%regexp:^[0-9a-f]{40}$%%]'
+    sha256: '[%%regexp:^[0-9a-f]{64}$%%]'
+    sha512: '[%%regexp:^[0-9a-f]{128}$%%]'
