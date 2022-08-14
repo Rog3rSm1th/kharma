@@ -72,6 +72,8 @@ def handle_element(self, string: str) -> str:
 
     # Parse element name
     element_reference = element_statement.group(1)
+    # Element ID
+    element_id = element_statement.group(4)
 
     # Create element if not exists
     element_exists = bool([element for element in self.elements if element.name == element_reference])
@@ -79,7 +81,9 @@ def handle_element(self, string: str) -> str:
         self.elements.append(KharmaElement(element_reference))
 
     # Generate element value (name + counter)
-    element_value = [element.value for element in self.elements if element.name == element_reference][0]
+    element_value = [
+        element.value(id_value=element_id) for element in self.elements if element.name == element_reference
+    ][0]
 
     # Replace element reference
     output_string = element_value.join(

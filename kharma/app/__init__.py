@@ -64,8 +64,8 @@ class Kharma:
         self.regexp_regexp = r"\[%%regexp:(?P<content>((?!\[%%).)+)%%\]"
         #  ++<anchor>++ OR ++<import>:<anchor>++
         self.anchor_regexp = r"\+\+([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)\+\+"
-        # @@<element>@@
-        self.element_regexp = r"\@\@(?P<content>((?!\@\@).)+)\@\@"
+        # @@<element>@@#id=<id>
+        self.element_regexp = r"\@\@(?P<content>((?!\@\@).)+)\@\@(?P<id>#id=([A-Za-z0-9_-]+))?"
         # [%%range%%](<min>, <max>)
         self.range_regexp = (
             r"\[%%range%%\]\((?P<min>-?([0-9]+|infinity|-infinity)),\s*(?P<max>-?([0-9]+|infinity|-infinity))\)"
