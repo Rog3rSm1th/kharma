@@ -186,7 +186,7 @@ def handle_range(self, string) -> str:
     max_range = parse_integer(range_statement.group(3))
     # Raise an error if min > max
     if min_range > max_range:
-        raise TemplateStatementError("Min must be larger than Max value in range statements (%s)" % range_statement)
+        raise TemplateStatementError("Min must be larger than Max value in range statement (%s)" % range_statement)
 
     # Generate a random integer
     random_integer = str(random_int(min_range, max_range))

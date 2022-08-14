@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kharma"
-version = "0.0.2"
+version = "0.0.3"
 description = "Kharma is a state-of-the-art grammar fuzzer"
 license = "MIT"
 readme = "README.md"

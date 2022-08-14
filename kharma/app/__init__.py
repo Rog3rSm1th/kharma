@@ -109,7 +109,7 @@ class Kharma:
 
         # Check if template is a dictionary
         if not isinstance(raw_template, dict):
-            raise BadTemplateError("Invalid template")
+            raise BadTemplateError("Invalid template: %s" % relative_path)
 
         # Check if all top level sections are valids
         valid_sections_titles = ["imports", "functions", "consts", "variables", "variance"]
@@ -239,7 +239,7 @@ class Kharma:
         self.parse_template(loaded_template)
         return True
 
-    def evaluate_expressions(self, string: str) -> str:
+    def evaluate_expression(self, string: str) -> str:
         """
         Evaluate an expression by interpreting statements and references.
         """
@@ -268,7 +268,7 @@ class Kharma:
         # Initialize elements
         self.elements = []
         while True:
-            evaluated_variable = self.evaluate_expressions(variable)
+            evaluated_variable = self.evaluate_expression(variable)
             if evaluated_variable != variable:
                 variable = evaluated_variable
             else:

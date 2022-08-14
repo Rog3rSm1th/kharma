@@ -1,3 +1,5 @@
+from importlib.metadata import version
+
 # ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣤⣴⣶⣶⣶⣤⣷⣄⡀⠀⠀⠀⠀⠀⠀⠀
 # ⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⠀⠀⠀⠀⠀
 # ⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⡀⠀
@@ -21,7 +23,9 @@
 # ⠀⠀⢀⣴⣶⣿⣿⣿⣿⣿⠯⣼⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 # ⣀⠤⠾⣿⣿⡿⠿⠿⣿⣿⣾⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-__version__ = "0.0.2"
+# Automatically retrieves the current version number
+__version__ = version("kharma")
+
 __author__ = "Rog3rSm1th"
 __email__ = "r0g3r5@protonmail.com"
 __git__ = "https://github.com/Rog3rSm1th"

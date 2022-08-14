@@ -1,14 +1,5 @@
 FROM python:3.11-rc-slim
-
-ENV POETRY_VERSION=1.1.14
-RUN python3 -m pip install poetry==$POETRY_VERSION
-
+LABEL maintainer Rog3rSm1th <r0g3r5@protonmail.com>
+RUN pip3 install kharma
 WORKDIR /app
-
-COPY poetry.lock pyproject.toml ./
-RUN poetry config virtualenvs.in-project true --local
-RUN poetry install --no-dev
-
-COPY . .
-
-ENTRYPOINT  ["poetry", "run", "kharma"]
+ENTRYPOINT  ["kharma"]
