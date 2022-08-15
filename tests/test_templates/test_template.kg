@@ -17,6 +17,8 @@ variables:
         - "++variable_vanilla++"
     variable_element:
         - "@@element_@@ @@element_@@"
+    variable_element_id:
+        - "@@element_id_@@#id=test @@element_id_@@ @@element_id_@@#id=test @@element_id_@@"
     variable_anchor_import_constant:
         - "++import:imported_constant++"
     variable_anchor_import_variable:

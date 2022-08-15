@@ -34,10 +34,14 @@ def handle_anchor(self, string) -> str:
         if is_import:
             import_reference = anchor_statement.group(1)[:-1]
             import_anchors = self.__class__.imports[import_reference].anchors
-            anchor_value = [anchor.value for anchor in import_anchors if anchor.name == anchor_reference][0]
+            anchor = [anchor for anchor in import_anchors if anchor.name == anchor_reference][0]
+            # Handle static variables
+            anchor_value = anchor.static_value if anchor.static else anchor.value
         # ++reference++
         else:
-            anchor_value = [anchor.value for anchor in self.anchors if anchor.name == anchor_reference][0]
+            anchor = [anchor for anchor in self.anchors if anchor.name == anchor_reference][0]
+            # Handle static variables
+            anchor_value = anchor.static_value if anchor.static else anchor.value
     # If reference isn't defined
     except KeyError as e:
         raise ReferenceError("%s is not imported" % import_reference)
@@ -68,6 +72,8 @@ def handle_element(self, string: str) -> str:
 
     # Parse element name
     element_reference = element_statement.group(1)
+    # Element ID
+    element_id = element_statement.group(4)
 
     # Create element if not exists
     element_exists = bool([element for element in self.elements if element.name == element_reference])
@@ -75,7 +81,9 @@ def handle_element(self, string: str) -> str:
         self.elements.append(KharmaElement(element_reference))
 
     # Generate element value (name + counter)
-    element_value = [element.value for element in self.elements if element.name == element_reference][0]
+    element_value = [
+        element.value(id_value=element_id) for element in self.elements if element.name == element_reference
+    ][0]
 
     # Replace element reference
     output_string = element_value.join(

@@ -64,8 +64,8 @@ class Kharma:
         self.regexp_regexp = r"\[%%regexp:(?P<content>((?!\[%%).)+)%%\]"
         #  ++<anchor>++ OR ++<import>:<anchor>++
         self.anchor_regexp = r"\+\+([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)\+\+"
-        # @@<element>@@
-        self.element_regexp = r"\@\@(?P<content>((?!\@\@).)+)\@\@"
+        # @@<element>@@#id=<id>
+        self.element_regexp = r"\@\@(?P<content>((?!\@\@).)+)\@\@(?P<id>#id=([A-Za-z0-9_-]+))?"
         # [%%range%%](<min>, <max>)
         self.range_regexp = (
             r"\[%%range%%\]\((?P<min>-?([0-9]+|infinity|-infinity)),\s*(?P<max>-?([0-9]+|infinity|-infinity))\)"
@@ -202,9 +202,10 @@ class Kharma:
         if "consts" in raw_template.keys():
             for constant, value in template["consts"].items():
                 # Static constants
+                static = False
                 if constant.startswith("static_"):
-                    value = self.resolve(value)
-                self.consts.append(KharmaConst(constant, value))
+                    static = True
+                self.consts.append(KharmaConst(constant, value, static=static))
 
         # Parse variables
         if "variables" in raw_template.keys():
@@ -213,9 +214,10 @@ class Kharma:
                 if already_defined:
                     raise BadTemplateError("%s is already defined as a constant" % variable)
                 # Static variables
+                static = False
                 if variable.startswith("static_"):
-                    values = [self.resolve(random.choice(values))]
-                self.variables.append(KharmaVar(variable, values))
+                    static = True
+                self.variables.append(KharmaVar(variable, values, static=static))
 
         # Parse variance section
         if "variance" in raw_template.keys():
@@ -280,10 +282,19 @@ class Kharma:
 
         return evaluated_variable
 
+    def resolve_static_anchors(self):
+        """
+        Resolve static constants and variables values
+        """
+        for anchor in self.anchors:
+            if anchor.static:
+                anchor.static_value = self.resolve(anchor.value)
+
     def generate(self) -> str:
         """
         Generate a document from a template.
         """
+        self.resolve_static_anchors()
         if hasattr(self, "main"):
             evaluated_document = self.resolve(self.main.value)
         else:

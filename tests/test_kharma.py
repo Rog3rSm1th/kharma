@@ -53,6 +53,12 @@ def test_kharma_variable_element():
     assert evaluated_expression == "element_0 element_1"
 
 
+def test_kharma_variable_element_id():
+    variable_element_id = [anchor for anchor in kharma.anchors if anchor.name == "variable_element_id"][0].value
+    evaluated_expression = kharma.resolve(variable_element_id)
+    assert evaluated_expression == "element_id_0 element_id_1 element_id_0 element_id_2"
+
+
 def test_kharma_variable_anchor_import_constant():
     variable_anchor_import_constant = [
         anchor for anchor in kharma.anchors if anchor.name == "variable_anchor_import_constant"

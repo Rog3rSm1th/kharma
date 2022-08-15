@@ -1,6 +1,6 @@
 import random
 import types
-from typing import List
+from typing import List, Tuple
 
 
 class KharmaObject:
@@ -17,9 +17,12 @@ class KharmaConst(KharmaObject):
     Can be called with ++<const_name>++
     """
 
-    def __init__(self, name: str, value: str) -> None:
+    def __init__(self, name: str, value: str, static: bool = False) -> None:
         self.name = name
         self.value = value
+        # Static consts
+        self.static = static
+        self.static_value = None
 
 
 class KharmaVar(KharmaObject):
@@ -28,9 +31,12 @@ class KharmaVar(KharmaObject):
     Can be called with ++<variable_name>++
     """
 
-    def __init__(self, name: str, values: List[str]) -> None:
+    def __init__(self, name: str, values: List[str], static: bool = False) -> None:
         self.name = name
         self.values = [value for value in values]
+        # Static variables
+        self.static = static
+        self.static_value = None
 
     @property
     def value(self) -> str:
@@ -49,14 +55,29 @@ class KharmaElement(KharmaObject):
     def __init__(self, name: str):
         self.name = name
         self.counter = 0
+        self.ids: List[Tuple] = []
 
-    @property
-    def value(self):
+    def value(self, id_value: str = None) -> str:
         """
         Concatenation of value and counter.
         """
-        value = "%s%s" % (self.name, str(self.counter))
-        self.counter += 1
+        # Use of an ID
+        if id_value is not None:
+            id_value_list = list(filter(lambda id_tuple: id_tuple[0] == id_value, self.ids))
+            # If first occurrence of the ID
+            if len(id_value_list) == 0:
+                counter = self.counter
+                self.ids.append((id_value, self.counter))
+                self.counter += 1
+            # If existing ID
+            else:
+                counter = id_value_list[0][1]
+        # No ID
+        else:
+            counter = self.counter
+            self.counter += 1
+        # Compute value
+        value = "%s%s" % (self.name, str(counter))
         return value
 
 
