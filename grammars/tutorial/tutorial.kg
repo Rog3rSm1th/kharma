@@ -94,6 +94,9 @@ variables:
         # The first time we call it, the result will be "element_0", the next time
         # "element_1", and so on
         - "@@element_@@"
+        # You can use id parameter to reuse same element value
+        # element_id_0 element_id_1 element_id_0 element_id_2
+        - "@@element_id_@@#id=test @@element_id_@@ @@element_id_@@#id=test @@element_id_@@"
     
     # Selection of a random value within the range
     variable_range:

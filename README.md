@@ -5,7 +5,7 @@
   <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg"></a>
   <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
   <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-  <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/pypi/v/kharma?label=release"></a>
+  <a target="_blank" href="https://pypi.org/project/kharma/" title="License: MIT"><img src="https://img.shields.io/pypi/v/kharma?label=release"></a>
   <a href="https://twitter.com/intent/follow?screen_name=Rog3rSm1th" title="Follow"><img src="https://img.shields.io/twitter/follow/Rog3rSm1th?label=Rog3rSm1th&style=social"></a>
   <br>
   <span><i></i></span>
@@ -204,6 +204,9 @@ variables:
         # The first time we call it, the result will be "element_0", the next time
         # "element_1", and so on
         - "@@element_@@"
+        # You can use id parameter to reuse same element value
+        # element_id_0 element_id_1 element_id_0 element_id_2
+        - "@@element_id_@@#id=test @@element_id_@@ @@element_id_@@#id=test @@element_id_@@"
     
     # Selection of a random value within the range
     variable_range:
