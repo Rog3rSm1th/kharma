@@ -1,6 +1,5 @@
 import copy
 import os
-import random
 import re
 from ruamel.yaml import YAML
 from typing import List, Tuple

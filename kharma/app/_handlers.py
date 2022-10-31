@@ -126,6 +126,8 @@ def handle_loop(self, string: str) -> str:
 
     # Generate looped string array
     loop_array = random_int(min_repeat, max_repeat) * [loop_statement.group(6)]
+    # Evaluate all looped strings to find duplicates thereafter
+    loop_array = [self.resolve(expression) for expression in loop_array]
 
     # Remove duplicates if needed
     if not allow_duplicates:
