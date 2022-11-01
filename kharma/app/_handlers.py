@@ -1,4 +1,5 @@
 import re
+from kharma.app import ANCHOR_REGEXP, CALL_REGEXP, ELEMENT_REGEXP, LOOP_REGEXP, RANGE_REGEXP, REGEXP_REGEXP
 from kharma.app.utils.config import Config
 from kharma.app.utils.exceptions import TemplateRecursionError, TemplateStatementError
 from kharma.app.utils.numeric import random_int
@@ -14,7 +15,7 @@ def handle_anchor(self, string) -> str:
     output_string = string
 
     # Find anchors references
-    anchor_statement = re.search(self.anchor_regexp, output_string)
+    anchor_statement = re.search(ANCHOR_REGEXP, output_string)
 
     # Avoid infinite loops caused by circular references
     self.recursion_depth += 1
@@ -65,7 +66,7 @@ def handle_element(self, string: str) -> str:
     output_string = string
 
     # Find elements references
-    element_statement = re.search(self.element_regexp, output_string)
+    element_statement = re.search(ELEMENT_REGEXP, output_string)
 
     if element_statement is None:
         return output_string
@@ -112,7 +113,7 @@ def handle_loop(self, string: str) -> str:
         raise RecursionError("Maximum loop recursion limit has been exceeded")
 
     # Find loop statements
-    loop_statement = re.search(self.loop_regexp, output_string)
+    loop_statement = re.search(LOOP_REGEXP, output_string)
 
     if loop_statement is None:
         self.loop_depth = 0
@@ -126,6 +127,8 @@ def handle_loop(self, string: str) -> str:
 
     # Generate looped string array
     loop_array = random_int(min_repeat, max_repeat) * [loop_statement.group(6)]
+    # Evaluate all looped strings to find duplicates thereafter
+    loop_array = [self.resolve(expression) for expression in loop_array]
 
     # Remove duplicates if needed
     if not allow_duplicates:
@@ -134,7 +137,7 @@ def handle_loop(self, string: str) -> str:
             # Do NOT remove statements/references duplicates
             if any(
                 re.compile(regex).match(element)
-                for regex in [self.element_regexp, self.anchor_regexp, self.regexp_regexp, self.range_regexp]
+                for regex in [ELEMENT_REGEXP, ANCHOR_REGEXP, REGEXP_REGEXP, RANGE_REGEXP]
             ):
                 loop_array_statements.append(element)
 
@@ -157,7 +160,7 @@ def handle_regexp(self, string: str) -> str:
     output_string = string
 
     # Find regexp statement
-    regexp_expression = re.search(self.regexp_regexp, output_string)
+    regexp_expression = re.search(REGEXP_REGEXP, output_string)
 
     if regexp_expression is None:
         return output_string
@@ -184,7 +187,7 @@ def handle_range(self, string) -> str:
     output_string = string
 
     # Find range statement
-    range_statement = re.search(self.range_regexp, output_string)
+    range_statement = re.search(RANGE_REGEXP, output_string)
 
     if range_statement is None:
         return output_string
@@ -215,7 +218,7 @@ def handle_call(self, string: str) -> str:
     output_string = string
 
     # Find python statement
-    call_statement = re.search(self.call_regexp, output_string)
+    call_statement = re.search(CALL_REGEXP, output_string)
 
     if call_statement is None:
         return output_string
