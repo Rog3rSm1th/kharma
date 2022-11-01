@@ -10,6 +10,24 @@ from kharma.app.utils.regexer import Regexer
 yaml = YAML()
 yaml.preserve_quotes = True  # type: ignore
 
+# [##repeat:<min>:<max>:<dup>:<separator>##]{%%}
+LOOP_REGEXP = r"\[##repeat:(?P<minimum>[0-9])+:(?P<maximum>[0-9]+):(?P<dup>dup|nodup):(?P<separator>((?!\[##).)*)##\]\{%((?!\[##).+)%\}"
+# [%%regexp:<regexp>%%]
+REGEXP_REGEXP = r"\[%%regexp:(?P<content>((?!\[%%).)+)%%\]"
+#  ++<anchor>++ OR ++<import>:<anchor>++
+ANCHOR_REGEXP = r"\+\+([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)\+\+"
+# @@<element>@@#id=<id>
+ELEMENT_REGEXP = r"\@\@(?P<content>((?!\@\@).)+)\@\@(?P<id>#id=([A-Za-z0-9_-]+))?"
+# [%%range%%](<min>, <max>)
+RANGE_REGEXP = r"\[%%range%%\]\((?P<min>-?([0-9]+|infinity|-infinity)),\s*(?P<max>-?([0-9]+|infinity|-infinity))\)"
+
+# !%python (arg1, arg2, etc...)
+#   <python_code>
+# %!
+PYTHON_REGEXP = r"^(<%python)\s\((([0-9A-Za-z-_]+,? ?)+)\)(\n(.|\n)*)%>$"
+# [%%call~function_name%%](<arg1>, <arg2>, ...) OR [%%call~import:function_name%%](<arg1>, <arg2>, ...)
+CALL_REGEXP = r"\[%%call~([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)%%]\(((((?!\[%%)[A-Za-z0-9-_ ])+,? ?)+)\)"
+
 
 class Kharma:
     """
@@ -56,27 +74,6 @@ class Kharma:
 
         # Generate valid strings from regex input
         self.regexer = Regexer()
-
-        # [##repeat:<min>:<max>:<dup>:<separator>##]{%%}
-        self.loop_regexp = r"\[##repeat:(?P<minimum>[0-9])+:(?P<maximum>[0-9]+):(?P<dup>dup|nodup):(?P<separator>((?!\[##).)*)##\]\{%((?!\[##).+)%\}"
-        # [%%regexp:<regexp>%%]
-        self.regexp_regexp = r"\[%%regexp:(?P<content>((?!\[%%).)+)%%\]"
-        #  ++<anchor>++ OR ++<import>:<anchor>++
-        self.anchor_regexp = r"\+\+([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)\+\+"
-        # @@<element>@@#id=<id>
-        self.element_regexp = r"\@\@(?P<content>((?!\@\@).)+)\@\@(?P<id>#id=([A-Za-z0-9_-]+))?"
-        # [%%range%%](<min>, <max>)
-        self.range_regexp = (
-            r"\[%%range%%\]\((?P<min>-?([0-9]+|infinity|-infinity)),\s*(?P<max>-?([0-9]+|infinity|-infinity))\)"
-        )
-        # !%python (arg1, arg2, etc...)
-        #   <python_code>
-        # %!
-        self.python_regexp = r"^(<%python)\s\((([0-9A-Za-z-_]+,? ?)+)\)(\n(.|\n)*)%>$"
-        # [%%call~function_name%%](<arg1>, <arg2>, ...) OR [%%call~import:function_name%%](<arg1>, <arg2>, ...)
-        self.call_regexp = (
-            r"\[%%call~([A-Za-z0-9-_]+:)?(?P<anchor>[A-Za-z0-9-_]+)%%]\(((((?!\[%%)[A-Za-z0-9-_ ])+,? ?)+)\)"
-        )
 
         # init recursion depth
         self.recursion_depth = 0
@@ -138,7 +135,7 @@ class Kharma:
             for name in raw_template["functions"]:
                 if not isinstance(raw_template["functions"][name], str):
                     raise BadTemplateError("function %s needs to be a string in %s" % (name, relative_path))
-                if not re.match(self.python_regexp, raw_template["functions"][name]):
+                if not re.match(PYTHON_REGEXP, raw_template["functions"][name]):
                     raise BadTemplateError("function %s is invalid in %s" % (name, relative_path))
 
         # Check if all imports are strings
@@ -169,7 +166,7 @@ class Kharma:
         Parse a function statement
         Return arguments and content
         """
-        function_groups = re.search(self.python_regexp, raw_function)
+        function_groups = re.search(PYTHON_REGEXP, raw_function)
         arguments = [argument.strip() for argument in function_groups.group(2).split(",")]  # type: ignore
         content = function_groups.group(4).replace("\n", "\n" + " " * 4)  # type: ignore
 
