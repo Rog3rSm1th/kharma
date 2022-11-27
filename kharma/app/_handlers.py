@@ -1,13 +1,13 @@
 import re
 from kharma.app import ANCHOR_REGEXP, CALL_REGEXP, ELEMENT_REGEXP, LOOP_REGEXP, RANGE_REGEXP, REGEXP_REGEXP
 from kharma.app.utils.config import Config
-from kharma.app.utils.exceptions import TemplateRecursionError, TemplateStatementError
+from kharma.app.utils.exceptions import TemplateRecursionError, TemplateReferenceError, TemplateStatementError
 from kharma.app.utils.numeric import random_int
 from kharma.app.utils.objects import KharmaElement
 from kharma.app.utils.parser import parse_integer
 
 
-def handle_anchor(self, string) -> str:
+def _handle_anchor(self, string: str) -> str:
     """
     Replace an anchor reference of the form ++<anchor_name>++ with the anchor value.
     e.g. "++variable++" -> "value_of_my_variable"
@@ -45,10 +45,10 @@ def handle_anchor(self, string) -> str:
             anchor_value = anchor.static_value if anchor.static else anchor.value
     # If reference isn't defined
     except KeyError as e:
-        raise ReferenceError("%s is not imported" % import_reference)
+        raise TemplateReferenceError("%s is not imported" % import_reference)
     except Exception as e:
         reference_error = "%s:%s" % (import_reference, anchor_reference) if is_import else anchor_reference
-        raise ReferenceError("%s is not defined" % reference_error)
+        raise TemplateReferenceError("%s is not defined" % reference_error)
 
     # replace references
     output_string = anchor_value.join(
@@ -57,7 +57,7 @@ def handle_anchor(self, string) -> str:
     return output_string
 
 
-def handle_element(self, string: str) -> str:
+def _handle_element(self, string: str) -> str:
     """
     Replace an element reference of the form @@<anchor_name>@@ with the element value (element name + counter)
     e.g. "@@element_@@ @@element_@@" -> "element_0 element_1"
@@ -93,7 +93,7 @@ def handle_element(self, string: str) -> str:
     return output_string
 
 
-def handle_loop(self, string: str) -> str:
+def _handle_loop(self, string: str) -> str:
     """
     Replace a loop statement of the form [##repeat:<min>:<max>:<dup|nodup>:<separator>##]{%<content>%}
     with a looped string.
@@ -128,7 +128,7 @@ def handle_loop(self, string: str) -> str:
     # Generate looped string array
     loop_array = random_int(min_repeat, max_repeat) * [loop_statement.group(6)]
     # Evaluate all looped strings to find duplicates thereafter
-    loop_array = [self.resolve(expression) for expression in loop_array]
+    loop_array = [self._resolve(expression) for expression in loop_array]
 
     # Remove duplicates if needed
     if not allow_duplicates:
@@ -151,7 +151,7 @@ def handle_loop(self, string: str) -> str:
     return output_string
 
 
-def handle_regexp(self, string: str) -> str:
+def _handle_regexp(self, string: str) -> str:
     """
     Replace a regexp statement of the form [%%regexp:<my_regexp>%%] with
     a random valid match for this regular expression.
@@ -178,7 +178,7 @@ def handle_regexp(self, string: str) -> str:
     return output_string
 
 
-def handle_range(self, string) -> str:
+def _handle_range(self, string) -> str:
     """
     Replace a range statement of the form [%%range%%](<min>-<max>) with
     a random integer in this range.
@@ -209,7 +209,7 @@ def handle_range(self, string) -> str:
     return output_string
 
 
-def handle_call(self, string: str) -> str:
+def _handle_call(self, string: str) -> str:
     """
     Replace a call statement of the form [%%call~<function_name>%%](<arg1>, <arg2>, ...)
     with the return value of the function.
@@ -238,9 +238,9 @@ def handle_call(self, string: str) -> str:
         else:
             function = [function for function in self.functions if function.name == function_name][0].function
     except KeyError as e:
-        raise ReferenceError("Function %s:%s is not imported" % (import_reference, function_name))
+        raise TemplateReferenceError("Function %s:%s is not imported" % (import_reference, function_name))
     except:
-        raise ReferenceError("Function %s is not defined" % function_name)
+        raise TemplateReferenceError("Function %s is not defined" % function_name)
 
     # Run function with arguments
     function_output = str(function(*arguments))

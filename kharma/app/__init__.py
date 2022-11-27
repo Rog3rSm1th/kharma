@@ -43,12 +43,12 @@ class Kharma:
     imported_paths: list = list()
 
     from ._handlers import (  # type: ignore
-        handle_anchor,
-        handle_element,
-        handle_loop,
-        handle_range,
-        handle_regexp,
-        handle_call,
+        _handle_anchor,
+        _handle_element,
+        _handle_loop,
+        _handle_range,
+        _handle_regexp,
+        _handle_call,
     )
 
     def __init__(self, template_path: str, safe_mode: bool = False) -> None:
@@ -81,9 +81,9 @@ class Kharma:
         self.loop_depth = 0
 
         # Load the template
-        self.load()
+        self._load()
 
-    def validate_template(self, raw_template: dict) -> None:
+    def _validate_template(self, raw_template: dict) -> None:
         """
         Check if it is a valid Kharma template.
         `
@@ -161,7 +161,7 @@ class Kharma:
                 if not is_list and is_list_of_strings:
                     raise BadTemplateError("variable %s needs to be a list of strings in %s" % (name, relative_path))
 
-    def parse_function(self, raw_function: str) -> Tuple:
+    def _parse_function(self, raw_function: str) -> Tuple:
         """
         Parse a function statement
         Return arguments and content
@@ -172,7 +172,7 @@ class Kharma:
 
         return (arguments, content)
 
-    def parse_template(self, raw_template: dict) -> None:
+    def _parse_template(self, raw_template: dict) -> None:
         """
         Parse a template dict and load constants/variables
         """
@@ -191,7 +191,7 @@ class Kharma:
         # Parse functions
         if "functions" in raw_template.keys():
             for variable, value in template["functions"].items():
-                parsed_function = self.parse_function(value)
+                parsed_function = self._parse_function(value)
                 self.functions.append(KharmaFunction(variable, parsed_function[0], parsed_function[1]))
 
         # Parse constants
@@ -221,7 +221,7 @@ class Kharma:
         # Load anchors
         self.anchors = self.consts + self.variables
 
-    def load(self) -> bool:
+    def _load(self) -> bool:
         """
         Load a template from a Kharma template (YAML) file.
         """
@@ -233,8 +233,8 @@ class Kharma:
 
         # Load consts and variables from the template
         loaded_template = yaml.load(template)
-        self.validate_template(loaded_template)
-        self.parse_template(loaded_template)
+        self._validate_template(loaded_template)
+        self._parse_template(loaded_template)
         return True
 
     def evaluate_expression(self, string: str) -> str:
@@ -242,12 +242,12 @@ class Kharma:
         Evaluate an expression by interpreting statements and references.
         """
         handlers = [
-            self.handle_loop,
-            self.handle_anchor,
-            self.handle_range,
-            self.handle_regexp,
-            self.handle_element,
-            self.handle_call,
+            self._handle_loop,
+            self._handle_anchor,
+            self._handle_range,
+            self._handle_regexp,
+            self._handle_element,
+            self._handle_call,
         ]
 
         # Disallow call statements inside templates
@@ -262,7 +262,7 @@ class Kharma:
                 return evaluated_string
         return evaluated_string
 
-    def resolve(self, variable: KharmaObject) -> str:
+    def _resolve(self, variable: KharmaObject) -> str:
         # Initialize elements
         self.elements = []
         while True:
@@ -278,21 +278,21 @@ class Kharma:
 
         return evaluated_variable
 
-    def resolve_static_anchors(self):
+    def _resolve_static_anchors(self):
         """
         Resolve static constants and variables values
         """
         for anchor in self.anchors:
             if anchor.static:
-                anchor.static_value = self.resolve(anchor.value)
+                anchor.static_value = self._resolve(anchor.value)
 
     def generate(self) -> str:
         """
         Generate a document from a template.
         """
-        self.resolve_static_anchors()
+        self._resolve_static_anchors()
         if hasattr(self, "main"):
-            evaluated_document = self.resolve(self.main.value)
+            evaluated_document = self._resolve(self.main.value)
         else:
             evaluated_document = ""
         return evaluated_document

@@ -47,6 +47,7 @@ pip3 install kharma
 
 Recommended for developers. It automatically clones the main branch from the kharma repo, and installs from source.
 
+
 ```bash
 # Automatically clone the Kharma repository and install Kharma from source
 bash <(wget -q https://raw.githubusercontent.com/Rog3rSm1th/Kharma/main/scripts/autoinstall.sh -O -)

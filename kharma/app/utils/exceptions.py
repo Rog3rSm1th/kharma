@@ -14,7 +14,7 @@ class TemplateRecursionError(Exception):
     pass
 
 
-class ReferenceError(Exception):
+class TemplateReferenceError(Exception):
     """
     Raised if a non-existing anchor is referenced
     """
