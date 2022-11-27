@@ -2,11 +2,11 @@
   <img src="https://github.com/Rog3rSm1th/Kharma/blob/main/doc/kharma_logo.png?raw=true" width="200" height="200" style="border-radius:4px"/>
   <br>
   <code>pip3 install kharma</code></br></br>
-  <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg"></a>
-  <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
-  <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-  <a target="_blank" href="https://pypi.org/project/kharma/" title="License: MIT"><img src="https://img.shields.io/pypi/v/kharma?label=release"></a>
-  <a href="https://twitter.com/intent/follow?screen_name=Rog3rSm1th" title="Follow"><img src="https://img.shields.io/twitter/follow/Rog3rSm1th?label=Rog3rSm1th&style=social"></a>
+  <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?style=flat-square"></a>
+  <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg?style=flat-square"></a>
+  <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square"></a>
+  <a target="_blank" href="https://pypi.org/project/kharma/" title="License: MIT"><img src="https://img.shields.io/pypi/v/kharma?label=release&style=flat-square"></a>
+  <a href="https://twitter.com/intent/follow?screen_name=Rog3rSm1th" title="Follow"><img src="https://img.shields.io/twitter/follow/Rog3rSm1th?label=Rog3rSm1th&style=flat-square"></a>
   <br>
   <span><i></i></span>
 </p>
@@ -25,7 +25,7 @@
   <img src="https://github.com/Rog3rSm1th/Kharma/blob/main/doc/kharma_demo.gif?raw=true" alt="Kharma demonstration"/>
 </p>
 
-Kharma is a state-of-the-art *grammar fuzzer*. It can generate many random documents based on a grammar, which can be used to improve your testing corpus by increasing code coverage and to find bugs/vulnerabilities in many kinds of applications (interpreters, files parsers, etc...).
+Kharma is a state-of-the-art **grammar fuzzer**. It can generate many random documents based on a grammar, which can be used to improve your testing corpus by increasing code coverage and to find bugs/vulnerabilities in many kinds of applications (interpreters, files parsers, etc...).
 
 ## Requirements
 [Python 3](https://www.python.org/)
