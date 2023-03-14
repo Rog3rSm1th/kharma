@@ -1,0 +1,23 @@
+consts:
+    STRING: "\"[%%regexp:[A-Za-z0-9]+%%]\""
+    SIGNED_NUMBER: "[%%range%%](-infinity, infinity)"
+    BOOL_TRUE: "true"
+    BOOL_FALSE: "false"
+    NULL_VALUE: "null"  
+    ARRAY: "[[##repeat:1:5:dup:,##]{%++VALUE++%}]"
+    KEY_PAIR_SEQUENCE: "[##repeat:1:5:dup:, ##]{%++PAIR++%}"
+    OBJECT: "{++KEY_PAIR_SEQUENCE++}"
+    PAIR: "++STRING++: ++VALUE++"
+
+variables:
+    VALUE:
+        - "++OBJECT++"
+        - "++ARRAY++"
+        - "++SIGNED_NUMBER++"
+        - "++BOOL_TRUE++"
+        - "++BOOL_FALSE++"
+        - "++NULL_VALUE++"
+
+variance:
+    main:
+        - "++OBJECT++"
